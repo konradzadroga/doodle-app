@@ -1,0 +1,73 @@
+/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import "~bootstrap/dist/css/bootstrap.css";
+@import '~@angular/material/theming';
+
+$custom-typography: mat-typography-config($font-family: '"Montserrat", sans-serif;');
+@include mat-core($custom-typography);
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.my-mat-card {
+    width: 400px;
+    margin: 5% auto;
+}
+
+.my-second-mat-card {
+    width: 1000px;
+    margin: 5% auto;
+}
+
+.my-spacer {
+    flex: 1 1 auto;
+  }
+
+.mat-toolbar {
+    position: relative;
+}
+
+.transparent .mat-dialog-container {
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0.0);
+}
+
+.center-mat-card-header {
+    width: 300px;
+    text-align: center;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.full-width-top-margin {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.center-top-margin {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.underline-span {
+    display: flex;
+    text-align: center;
+    margin-top: -10px;
+}
+
+.my-toolbar-button {
+    margin-top: 7px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.center-container-no-top-margin {
+    text-align: center;
+}
+
+.right-aligned-header > .mat-content {
+    justify-content: space-between;
+}

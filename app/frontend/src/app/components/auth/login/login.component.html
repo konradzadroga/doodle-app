@@ -1,0 +1,58 @@
+<div class="container">
+  <mat-card class="my-mat-card mat-elevation-z14">
+    <div class="my-mat-header">
+      <div class="my-title" style="text-align: center; width: 350px;">
+        <h5>Zaloguj się</h5>
+      </div>
+    </div>
+    <mat-card-content>
+      <form>
+        <table class="full-width">
+          <tr>
+            <td>
+              <mat-form-field class="full-width-top-margin">
+                <input matInput placeholder="Login" [(ngModel)]="username" [formControl]="usernameFormControl"
+                  [errorStateMatcher]="matcher" name="username" required>
+                <mat-error>
+                  Login jest wymagany
+                </mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="full-width-top-margin">
+                <input matInput placeholder="Hasło" [(ngModel)]="password" [formControl]="passwordFormControl"
+                  [errorStateMatcher]="matcher" type="password" name="password" required>
+                <mat-error>
+                  Hasło jest wymagane i musi zawierać co najmniej 6 znaków
+                </mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div *ngIf="loginFailed === true">
+                <span style="color: #b30c49">Niepoprawna nazwa użytkownika lub hasło</span>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <div style="text-align: center">
+        <button mat-raised-button color="accent" (click)="login()" 
+          [disabled]="usernameFormControl.invalid || passwordFormControl.invalid">Zaloguj się</button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<mat-divider></mat-divider>
+<div class="center-top-margin">
+  <span>Nie posiadasz konta?</span>
+  <br>
+  <button mat-raised-button color="accent" [routerLink]="['/register']" style="margin-top: 10px; margin-bottom: 10px;">Zarejestruj
+    się</button>
+</div>
+<mat-divider></mat-divider>

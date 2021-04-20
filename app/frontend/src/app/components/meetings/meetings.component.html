@@ -1,0 +1,16 @@
+<mat-toolbar color="primary" class="mat-elevation-z12">
+    <mat-toolbar-row>
+            <button mat-button style="margin-left: 10px;" (click)="choose()" [routerLink]="['./my-meetings']">
+                <mat-icon>face</mat-icon>
+                <span class="underline-span">Organizowane przeze mnie</span>
+            </button>
+            <button mat-button style="margin-left: 10px;" (click)="choose()" [routerLink]="['./other-meetings']">
+                <mat-icon>supervisor_account</mat-icon>
+                <span class="underline-span">Organizowane przez innych</span>
+            </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div *ngIf="!chosen" class="center-top-margin">
+    <p style="font-size: larger; margin-top: 10%;"><b>Wybierz opcję z menu powyżej.</b></p>
+</div>
+<router-outlet></router-outlet>

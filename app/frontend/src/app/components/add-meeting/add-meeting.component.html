@@ -1,0 +1,265 @@
+<mat-card class="my-second-mat-card mat-elevation-z14">
+    <mat-horizontal-stepper [linear]=true #stepper>
+        <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup">
+                <ng-template matStepLabel>Informacje</ng-template>
+                <div class="center-container-no-top-margin">
+                    <div>
+                        <mat-form-field>
+                            <mat-label>Nazwa</mat-label>
+                            <input matInput formControlName="nameCtrl" placeholder="Nazwa" [(ngModel)]="name" required>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field>
+                            <mat-label>Lokalizacja</mat-label>
+                            <input matInput formControlName="locationCtrl" placeholder="Lokalizacja"
+                                [(ngModel)]="location" required>
+                        </mat-form-field>
+                        <div>
+                            <mat-form-field>
+                                <mat-label>Opis</mat-label>
+                                <input matInput formControlName="descriptionCtrl" placeholder="Opis"
+                                    [(ngModel)]="description" required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div>
+                        <button mat-raised-button color="primary" matStepperNext>Dalej</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <form>
+                <ng-template matStepLabel>Wybierz użytkowników</ng-template>
+                <div class="center-container-no-top-margin">
+                    <div>
+                        <form class="example-form">
+                            <mat-form-field class="example-full-width">
+                                <input type="text" placeholder="Podaj nick" aria-label="Number" matInput
+                                    [formControl]="usernameControl" [matAutocomplete]="auto">
+                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                    <mat-option *ngFor="let option of filteredUsernames | async" [value]="option">
+                                        {{option}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                    <div>
+                        <button mat-raised-button (click)="filterUsernames()">Filtruj</button>
+                        <button mat-raised-button style="margin-left: 3px;" (click)="clearFilter()">Wyczyść
+                            filtr</button>
+                    </div>
+                </div>
+                <div class="center-top-margin" *ngIf="userChosen | async">
+                    <mat-divider></mat-divider>
+                    <div class="row">
+                        <div class="col">
+                            <div>
+                                <div class="container">
+                                    <div class="info-container">
+                                        <b>Nick:</b><br>
+                                    </div>
+                                    <div class="info-container">
+                                        <b>Imię:</b><br>
+                                    </div>
+                                    <div class="info-container">
+                                        <b>Nazwisko:</b><br>
+                                    </div>
+                                    <div class="info-container">
+                                        <b>E-mail:</b><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div>
+                                <div class="container">
+                                    <div class="info-container">
+                                        {{chosenUser.username}}
+                                    </div>
+                                    <div class="info-container">
+                                        {{chosenUser.name}}
+                                    </div>
+                                    <div class="info-container">
+                                        {{chosenUser.surname}}
+                                    </div>
+                                    <div class="info-container">
+                                        {{chosenUser.email}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div style="margin-top: 20px">
+                                <button mat-raised-button (click)="addUser(this.chosenUsername)">Dodaj</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="center-top-margin">
+                    <div style="margin-top: 3%;">
+                        <mat-divider></mat-divider>
+                    </div>
+                    <div class="users-container">
+                        <p>Lista użytkowników:</p>
+                        <ng-container *ngFor="let username of usernames">
+                            <button mat-raised-button class="chosen-user-button" color="accent"
+                                (click)="getUserInformation(username)">{{username}}</button>
+                        </ng-container>
+                    </div>
+                    <div style="margin-top: 3%;">
+                        <mat-divider></mat-divider>
+                    </div>
+                    <div *ngIf="chosenUsernames.length>0" class="users-container">
+                        <p>Wybrani użytkownicy:</p>
+                        <ng-container *ngFor="let username of chosenUsernames">
+                            <button mat-raised-button class="chosen-user-button" color="warn"
+                                (click)="removeUser(username)">{{username}}</button>
+                        </ng-container>
+                        <div>
+                            <p>Aby usunąć użytkownika ze spotkania, kliknij w jego nick.</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 3%;">
+                        <mat-divider></mat-divider>
+                    </div>
+                    <div *ngIf="chosenUsernames.length>0">
+                        <div>
+                            <div>
+                                <button mat-raised-button color="primary" matStepperNext>Dalej</button>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <p>Aby zakończyć wybór użytkowników naciśnij przycisk 'Dalej'.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup">
+            <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>Wybierz datę</ng-template>
+                <div class="center-container-no-top-margin">
+                    <div>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Data</mat-label>
+                            <input matInput formControlName="dateCtrl" [min]="minDate" [matDatepicker]="picker"
+                                [(ngModel)]="proposedStartDate" required>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <div>
+                            <button mat-raised-button matStepperNext (click)="getFreeTimeSlots()"
+                                [disabled]="proposedStartDate==undefined">Dalej</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Wybierz godziny</ng-template>
+            <div>
+                <div>
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="info-container">
+                                <b>Wybierz godziny spotkania. Kliknij aby wybrać godzinę rozpoczęcia, a następnie
+                                    godzinę zakończenia spotkania.</b>
+                            </div>
+                            <div>
+                                <button mat-raised-button style="margin-bottom: 10px;" (click)="clearTimeSlots()"
+                                    [disabled]="proposedStartTime==-1">Restart
+                                </button>
+                                <button mat-raised-button matStepperNext
+                                    [disabled]="proposedStartTime==-1 || proposedEndTime ==-1" color="primary"
+                                    style="float: right; margin-right: 20%;">Dalej</button>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="info-container">
+                                <b>Godzina rozpoczęcia spotkania:</b><br>
+                                <ng-container *ngIf="proposedStartTime==-1">
+                                    <b>Nie wybrano</b>
+                                </ng-container>
+                                <ng-container *ngIf="proposedStartTime!=-1">
+                                    <b>{{(proposedStartTime/100).toFixed(2)}}</b>
+                                </ng-container>
+                            </div>
+                            <div class="info-container">
+                                <b>Godzina zakończenia spotkania:</b><br>
+                                <ng-container *ngIf="proposedEndTime==-1">
+                                    <b>Nie wybrano</b>
+                                </ng-container>
+                                <ng-container *ngIf="proposedEndTime!=-1">
+                                    <b>{{(proposedEndTime/100).toFixed(2)}}</b>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="timeSlotsLoaded | async">
+                    <mat-card>
+                        <ng-container *ngFor="let timeSlot of timeSlots; index as i">
+                            <button mat-raised-button color="accent" style="width: 25%"
+                                [disabled]="timeSlot.timeSlotFree==false || lockAll"
+                                (click)="selectTimeSlots(timeSlot.time, i)">
+                                {{(timeSlot.time/100).toFixed(2)}}
+                            </button>
+                        </ng-container>
+                    </mat-card>
+                </div>
+            </div>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Potwierdź</ng-template>
+            <div>
+                <div class="row">
+                    <div class="col">
+                        <div class="info-container">
+                            <b>Nazwa:</b><br>
+                            <b>{{name}}</b>
+                        </div>
+                        <div class="info-container">
+                            <b>Lokalizacja:</b><br>
+                            <b>{{location}}</b>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="info-container">
+                            <b>Proponowana data:</b><br>
+                            <b>{{proposedStartDateString.substring(0,15)}}</b>
+                        </div>
+                        <div class="info-container">
+                            <b>Proponowana godzina rozpoczęcia:</b><br>
+                            <b>{{(proposedStartTime/100).toFixed(2)}}</b>
+                        </div>
+                        <div class="info-container">
+                            <b>Proponowana godzina zakończenia:</b><br>
+                            <b>{{(proposedEndTime/100).toFixed(2)}}</b>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="info-container">
+                            <b>Opis:</b><br>
+                                <b>{{description}}</b>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="info-container">
+                            <b>Uczestnicy:</b><br>
+                            <div *ngFor="let username of chosenUsernames">
+                                <b>{{username}}</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="center-top-margin">
+                    <button mat-raised-button color="primary" (click)="addMeeting()">Dodaj spotkanie</button>
+                </div>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</mat-card>

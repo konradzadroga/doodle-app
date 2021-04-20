@@ -1,0 +1,102 @@
+<mat-card class="my-second-mat-card mat-elevation-z14">
+    <mat-horizontal-stepper [linear]=true #stepper>
+        <mat-step [stepControl]="formGroup">
+            <form [formGroup]="formGroup">
+                <ng-template matStepLabel>Wybierz datę</ng-template>
+                <div class="center-container-no-top-margin">
+                    <div>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Data</mat-label>
+                            <input matInput formControlName="dateCtrl" [min]="minDate" [matDatepicker]="picker"
+                                [(ngModel)]="proposedStartDate" required>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <div>
+                            <button mat-raised-button matStepperNext (click)="getFreeTimeSlots()"
+                                [disabled]="proposedStartDate==undefined">Dalej</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Wybierz godziny</ng-template>
+            <div>
+                <div>
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="info-container">
+                                <b>Wybierz godziny spotkania. Kliknij aby wybrać godzinę rozpoczęcia, a następnie
+                                    godzinę zakończenia spotkania.</b>
+                            </div>
+                            <div>
+                                <button mat-raised-button style="margin-bottom: 10px;" (click)="clearTimeSlots()"
+                                    [disabled]="proposedStartTime==-1">Restart
+                                </button>
+                                <button mat-raised-button matStepperNext
+                                    [disabled]="proposedStartTime==-1 || proposedEndTime ==-1"
+                                    color="primary" style="float: right; margin-right: 20%;">Dalej</button>
+                            </div>
+                        </div>
+                    <div class="col">
+                        <div class="info-container">
+                            <b>Godzina rozpoczęcia spotkania:</b><br>
+                            <ng-container *ngIf="proposedStartTime==-1">
+                                <b>Nie wybrano</b>
+                            </ng-container>
+                            <ng-container *ngIf="proposedStartTime!=-1">
+                                <b>{{(proposedStartTime/100).toFixed(2)}}</b>
+                            </ng-container>
+                        </div>
+                        <div class="info-container">
+                            <b>Godzina zakończenia spotkania:</b><br>
+                            <ng-container *ngIf="proposedEndTime==-1">
+                                <b>Nie wybrano</b>
+                            </ng-container>
+                            <ng-container *ngIf="proposedEndTime!=-1">
+                                <b>{{(proposedEndTime/100).toFixed(2)}}</b>
+                            </ng-container>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div *ngIf="timeSlotsLoaded | async">
+                    <mat-card>
+                        <ng-container *ngFor="let timeSlot of timeSlots; index as i">
+                            <button mat-raised-button color="accent" style="width: 25%"
+                                [disabled]="timeSlot.timeSlotFree==false || lockAll"
+                                (click)="selectTimeSlots(timeSlot.time, i)">
+                                {{(timeSlot.time/100).toFixed(2)}}
+                            </button>
+                        </ng-container>
+                    </mat-card>
+                </div>
+            </div>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Potwierdź</ng-template>
+            <div>
+                <div class="row">
+                    <div class="col">
+                        <div class="info-container">
+                            <b>Proponowana data:</b><br>
+                            <b>{{proposedStartDateString.substring(0,15)}}</b>
+                        </div>
+                        <div class="info-container">
+                            <b>Proponowana godzina rozpoczęcia:</b><br>
+                            <b>{{(proposedStartTime/100).toFixed(2)}}</b>
+                        </div>
+                        <div class="info-container">
+                            <b>Proponowana godzina zakończenia:</b><br>
+                            <b>{{(proposedEndTime/100).toFixed(2)}}</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="center-top-margin">
+                    <button mat-raised-button color="primary" (click)="addProposedDate()">Dodaj proponowaną datę</button>
+                </div>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</mat-card>

@@ -1,0 +1,11 @@
+<div *ngIf="meetingsLoaded | async">
+    <div *ngIf="meetings==undefined || meetings.length==0" class="center-top-margin">
+        <p style="font-size: larger; margin-top: 10%;"><b>Nie zostałeś/aś jeszcze zaproszony/a na żadne spotkanie.</b>
+        </p>
+    </div>
+    <div>
+        <div *ngFor="let meeting of meetings">
+            <app-meeting [meeting]="meeting"></app-meeting>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,151 @@
+<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" class="my-panel">
+    <mat-expansion-panel-header class="right-aligned-header">
+        <mat-panel-title>
+            {{meeting.name}}
+        </mat-panel-title>
+        <mat-panel-description>
+            <div class="container" *ngIf="!panelOpenState">
+                <div class="row">
+                    <div class="col-6">
+                        <p>{{meeting.location}}</p>
+                    </div>
+                    <div class="col">
+                        <ng-container *ngIf="meeting.confirmed==true">
+                            <p>✅ </p>
+                        </ng-container>
+                        <ng-container *ngIf="meeting.confirmed==false">
+                            <p>❌</p>
+                        </ng-container>
+                    </div>
+                    <div class="col">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="row" style="margin-top: 10px;">
+        <div class="col">
+            <div>
+                <img src="https://ehq-production-us-california.imgix.net/3aa184fc578b28f2551285532bb84326503960ad/projects/images/000/002/142/original/running-effective-meeting.jpg?auto=compress%2Cformat&w=1080"
+                    height="140" width="160">
+            </div>
+        </div>
+        <div class="col">
+            <div class="info-container"><b>Lokalizacja:</b><br>
+                {{meeting.location}}</div>
+
+            <div class="info-container"><b>Organizator:</b><br>
+                {{meeting.organizer.username}}</div>
+
+            <div class="info-container"><b>Potwierdzony:</b><br>
+                <ng-container *ngIf="meeting.confirmed==true">
+                    <p>✅ </p>
+                </ng-container>
+                <ng-container *ngIf="meeting.confirmed==false">
+                    <p>❌</p>
+                </ng-container>
+            </div>
+        </div>
+        <div class="col">
+            <div class="info-container">
+                <b>Opis:</b><br>
+                {{meeting.description}}
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="info-container"><b>Potwierdzona data startu:</b><br>
+                <ng-container *ngIf="meeting.confirmed==true">
+                    {{meeting.confirmedStartDate.toString().substring(0,10)}}
+                </ng-container>
+                <ng-container *ngIf="meeting.confirmed==false">
+                    Brak
+                </ng-container>
+            </div>
+            <div class="info-container"><b>Potwierdzona godzina startu:</b><br>
+                <ng-container *ngIf="meeting.confirmed==true">
+                    {{(meeting.confirmedStartTime/100).toFixed(2)}}
+                </ng-container>
+                <ng-container *ngIf="meeting.confirmed==false">
+                    Brak
+                </ng-container>
+            </div>
+            <div class="info-container"><b>Potwierdzona godzina zakończenia:</b><br>
+                <ng-container *ngIf="meeting.confirmed==true">
+                    {{(meeting.confirmedEndTime/100).toFixed(2)}}
+                </ng-container>
+                <ng-container *ngIf="meeting.confirmed==false">
+                    Brak
+                </ng-container>
+            </div>
+        </div>
+        <div class="col">
+            <div class="info-container"><b>Uczestnicy:</b><br>
+                <div *ngFor="let user of meeting.users">
+                    {{user.username}}
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <ng-container *ngIf="meeting.organizer.username!=myUsername">
+                <button mat-raised-button color="warn" style="margin-top: 15px; margin-right: 30px" (click)="setMeetingId(meeting.id)" [routerLink]="['/propose-meeting-date']" [disabled]="meeting.confirmed==true">
+                    Zaproponuj inny termin
+                </button>
+            </ng-container>
+        </div>
+    </div>
+    <mat-divider style="margin-bottom: 1%;"></mat-divider>
+    <div *ngIf="meeting.confirmed==false">
+        <div>
+            <p><b>Proponowane terminy:</b></p>
+            <mat-divider></mat-divider>
+        </div>
+        <ng-container *ngFor="let proposedDate of meeting.proposedDateDTOs; index as i">
+            <div class="proposed-date">
+                <div class="row">
+                    <div class="col">
+                        <div class="info-container"><b>Data:</b><br>
+                            <p>{{proposedDate.proposedStartDate.toString().substring(0,10)}}</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="info-container"><b>Godzina startu:</b><br>
+                            <p>{{(proposedDate.proposedStartTime/100).toFixed(2)}}</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="info-container"><b>Godzina zakończenia:</b><br>
+                            <p>{{(proposedDate.proposedEndTime/100).toFixed(2)}}</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="info-container"><b>Proponowana przez:</b><br>
+                            <p>{{proposedDate.proponentUsername}}</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="info-container"><b>Głosy:</b><br>
+                            <div *ngFor="let username of dateVotes[proposedDate.id.toString()]">
+                                {{username}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <ng-container *ngIf="meeting.organizer.username==myUsername">
+                            <button mat-raised-button color="warn"
+                                (click)="setMeetingAsConfirmed(this.meeting.id, proposedDate.id)">
+                                Potwierdź
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="meeting.organizer.username!=myUsername">
+                            <button mat-raised-button color="accent" (click)="vote(proposedDate.id)">
+                                Zagłosuj
+                            </button>
+                        </ng-container>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+            </div>
+        </ng-container>
+    </div>
+</mat-expansion-panel>

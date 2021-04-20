@@ -1,0 +1,41 @@
+<mat-toolbar color="primary" style="z-index: 1;" class="mat-elevation-z12">
+    <mat-toolbar-row>
+        <span class="my-spacer"></span>
+        <ng-container *ngIf="!loggedIn">
+            <button mat-button style="margin-left: 10px;" [routerLink]="['/home']">
+                <mat-icon>home</mat-icon>
+                <span class="underline-span">Strona startowa</span>
+            </button>
+            <button mat-button style="margin-left: 10px;" [routerLink]="['/login']">
+                <mat-icon>vpn_key</mat-icon>
+                <span class="underline-span">Logowanie</span>
+            </button>
+            <button mat-button style="margin-left: 10px;" [routerLink]="['/register']">
+                <mat-icon>create</mat-icon>
+                <span class="underline-span">Rejestracja</span>
+            </button>
+        </ng-container>
+        <ng-container *ngIf="loggedIn">
+            <button mat-button style="margin-left: 10px; margin-right: 80px;">
+                <mat-icon>pan_tool</mat-icon>
+                <span class="underline-span">Witaj {{username}}!</span>
+            </button>
+            <button mat-button style="margin-left: 10px;" [routerLink]="['/home']">
+                <mat-icon>home</mat-icon>
+                <span class="underline-span">Strona startowa</span>
+            </button>
+            <button mat-button style="margin-left: 10px;" [routerLink]="['/meetings']">
+                <mat-icon>group</mat-icon>
+                <span class="underline-span">Moje spotkania</span>
+            </button>
+            <button mat-button style="margin-left: 10px;" [routerLink]="['/add-meeting']">
+                <mat-icon>add_circle</mat-icon>
+                <span class="underline-span">Dodaj nowe</span>
+            </button>
+            <button mat-button style="margin-left: 10px;" (click)="signOut()">
+                <mat-icon>exit_to_app</mat-icon>
+                <span class="underline-span">Wyloguj się</span>
+              </button>
+        </ng-container>
+    </mat-toolbar-row>
+</mat-toolbar>

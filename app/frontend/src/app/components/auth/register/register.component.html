@@ -1,0 +1,92 @@
+<mat-card class="my-mat-card mat-elevation-z14">
+    <div class="my-mat-header">
+        <div class="my-title" style="text-align: center;">
+            <h5>Zarejestruj się</h5>
+        </div>
+    </div>
+    <mat-card-content>
+        <form>
+            <table class="full-width">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width-top-margin">
+                            <input matInput placeholder="Login" [(ngModel)]="username" name="username"
+                                [formControl]="usernameFormControl" [errorStateMatcher]="matcher" required>
+                            <mat-error>
+                                Login jest wymagany
+                            </mat-error>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width-top-margin">
+                            <input matInput placeholder="Hasło" [(ngModel)]="password"
+                                [formControl]="passwordFormControl" [errorStateMatcher]="matcher" type="password"
+                                name="password" required>
+                            <mat-error>
+                                Hasło jest wymagane i musi posiadać co najmniej 6 znaków
+                            </mat-error>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width-top-margin">
+                            <input matInput placeholder="Imię" [(ngModel)]="name" type="name"
+                                [formControl]="nameFormControl" name="name" [errorStateMatcher]="matcher" required>
+                            <mat-error>
+                                Imię jest wymagane
+                            </mat-error>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width-top-margin">
+                            <input matInput placeholder="Nazwisko" [(ngModel)]="surname"
+                                [formControl]="surnameFormControl" name="surname" [errorStateMatcher]="matcher"
+                                required>
+                            <mat-error>
+                                Nazwisko jest wymagane
+                            </mat-error>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width-top-margin">
+                            <input matInput placeholder="E-mail" [(ngModel)]="email" name="email"
+                                [formControl]="emailFormControl" [errorStateMatcher]="matcher" required>
+                            <mat-error>
+                                E-mail jest wymagany
+                            </mat-error>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                <tr>
+                    <td>
+                        <span style="color: #b30c49">{{errorMsg}}</span>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </mat-card-content>
+    <mat-card-actions>
+        <div style="text-align: center;">
+            <button mat-raised-button color="accent" (click)="register()"
+                [disabled]="usernameFormControl.invalid || nameFormControl.invalid || surnameFormControl.invalid || emailFormControl.invalid || passwordFormControl.invalid">
+                Zarejestruj się</button>
+        </div>
+    </mat-card-actions>
+</mat-card>
+
+<mat-divider></mat-divider>
+<div class="center-top-margin">
+  <span>Masz już konto?</span>
+  <br>
+  <button mat-raised-button color="accent" [routerLink]="['/login']" style="margin-top: 10px; margin-bottom: 10px;">Zaloguj
+    się</button>
+</div>
+<mat-divider></mat-divider>
